@@ -25,7 +25,8 @@ class Game:
             y=y+size
             pygame.draw.line(surface,(255,255,255),(x,0),(x,w))
             pygame.draw.line(surface,(255,255,255),(0,y),(w,y))
-        pygame.draw.rect(surface,"white",())
+        for i in range(20):
+            pygame.draw.rect(surface,"white",(30*i,0,30,30))
 
     def redrawWindow(self, surface):
         surface.fill((0,0,0))
