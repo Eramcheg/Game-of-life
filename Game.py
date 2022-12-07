@@ -12,8 +12,7 @@ class Game:
 
         for i in range(20):
             self.life.append([])
-        # for i in range(20):
-        #     for j in range(20):
+
 
     def fucking_move(self,surface,i):
         pygame.draw.rect(surface, "white", (30 * i, 0, 30, 30))
@@ -28,8 +27,7 @@ class Game:
             y=y+size
             pygame.draw.line(surface,(255,255,255),(x,0),(x,w))
             pygame.draw.line(surface,(255,255,255),(0,y),(w,y))
-        #self.fucking_move(surface,i)
-        #pygame.draw.rect(surface, "white", (30, 0, 30, 30))
+
 
     def draw(self,surface,i):
         pygame.draw.rect(surface, (255, 255, 255), (60, 60*i, 60, 60))
@@ -43,7 +41,6 @@ class Game:
         global width,rows
         width=600
         rows=10
-        height=600
         win=pygame.display.set_mode((width,width))
         clock=pygame.time.Clock()
 
@@ -54,9 +51,6 @@ class Game:
             clock.tick(60)
 
             self.redrawWindow(win,i)
-
-
-            #self.fucking_move(win,i)
             i+=1
 
 game=Game()
