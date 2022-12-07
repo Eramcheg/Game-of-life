@@ -1,26 +1,26 @@
 import pygame
 
-class Cube:
-    def __init__(self):
-        pass
-
-
 class Game:
-    life=[]
-    rows=10
+    life=[]                  #Объявление глобальных переменных
+    rows=20
     Counter=0
+    width=600
+    CubeSize=width//rows
     stopFlag=False
-    def __init__(self, cubes=0):
 
-        for i in range(self.rows):
+
+
+    def __init__(self):
+
+        for i in range(self.rows):          #Заполнение примитивного массива игры мертвыми клетками
             self.life.append([])
             for j in range(self.rows):
                 self.life[i].append(0)
-        self.life[0][0]=1
 
 
 
-    def drawGrid(self,w,rows,surface):
+
+    def drawGrid(self,w,rows,surface):         #Прорисовка сетки поля
         size=w//rows
         x=0
         y=0
@@ -30,6 +30,9 @@ class Game:
             pygame.draw.line(surface,(200,200,200),(x,0),(x,w))
             pygame.draw.line(surface,(200,200,200),(0,y),(w,y))
 
+
+
+    # Рабочий алгоритм игры "Жизнь", продемонстрированный в файле Primitive.py
     def algorithm(self):
         life=self.life
         life_kopie=[]
@@ -64,41 +67,50 @@ class Game:
                     life_kopie[i][j] = 0
         self.life=life_kopie
 
-    def draw(self,surface,i):
+
+
+
+    def draw(self,surface):
         life=self.life
         Length=len(life)
-        pygame.draw.rect(surface, (255, 255, 255), (60, 60 * i, 60, 60))
         for i in range(Length):
             for j in range(Length):
                 if life[i][j]==1:
-                    pygame.draw.rect(surface, (255, 255, 255), (j * 60, i * 60, 60, 60))   #Проверяем какие клетки у нас живые
-                                                                                           #и закрашиваем их
+                    pygame.draw.rect(surface, (255, 255, 255), (j *self.CubeSize, i * self.CubeSize, self.CubeSize, self.CubeSize))
+                    #Проверяем какие клетки у нас живые
+                    #после чего закрашиваем их
 
 
 
-
-    def redrawWindow(self, surface,i):
+    # Обновление картинки на экране
+    def redrawWindow(self, surface):
         surface.fill((0,0,0))
         self.drawGrid(width,rows,surface)
-        self.draw(surface,i)
+        self.draw(surface)
         self.algorithm()
         pygame.display.update()
 
-    def stopProgram(self,flagStop,Counter, win):
+
+
+    # Пауза программы и возможности во время паузы
+    def pauseProgram(self,flagStop,Counter, win):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
+                if event.key == pygame.K_SPACE:                #Проверка на нажатие кнопки паузы
                     Counter += 1
                     if Counter % 2 is 0:
                         flagStop = False
                     else:
                         flagStop = True
+                if event.key ==pygame.K_ESCAPE:                #Проверка на нажатие кнопки выхода
+                    pygame.quit()
+
             if event.type==pygame.MOUSEBUTTONDOWN:
                 if event.button==1:
-                    mx,my=pygame.mouse.get_pos()                                         #Считываем позицию курсора
+                    mx,my=pygame.mouse.get_pos()               #Считываем позицию курсора
 
-                    x_coordinate=mx//60   #Координата х клетки
-                    y_coordinate=my//60   #Координата у клетки
+                    x_coordinate=mx//self.CubeSize   #Координата х клетки
+                    y_coordinate=my//self.CubeSize   #Координата у клетки
 
 
                     if self.life[y_coordinate][x_coordinate]!=1:
@@ -107,22 +119,27 @@ class Game:
                     else:
                         self.user_drawing(win,(0,0,0),x_coordinate,y_coordinate,0)        #Если клетка жива и мы кликаем
                                                                                           #То превращаем клетку в мертвую
-                    print(self.life)
+
                     pygame.display.update()
         return flagStop,Counter
 
-    def user_drawing(self,surface, color, x_coordinate,y_coordinate, cell_type):
-        pygame.draw.rect(surface, color, (x_coordinate * 60, y_coordinate * 60, 60, 60))
-        self.life[y_coordinate][x_coordinate] = cell_type
-        pygame.draw.line(surface, (200, 200, 200), (x_coordinate * 60, 0), (x_coordinate * 60, 600))
-        pygame.draw.line(surface, (200, 200, 200), (0, y_coordinate * 60), (600, y_coordinate * 60))
 
+
+    #Процесс создания клетки пользователем во время паузы
+    def user_drawing(self,surface, color, x_coordinate,y_coordinate, cell_type):
+        pygame.draw.rect(surface, color, (x_coordinate * self.CubeSize, y_coordinate * self.CubeSize, self.CubeSize, self.CubeSize))
+        self.life[y_coordinate][x_coordinate] = cell_type
+        pygame.draw.line(surface, (200, 200, 200), (x_coordinate * self.CubeSize, 0), (x_coordinate * self.CubeSize, self.width))
+        pygame.draw.line(surface, (200, 200, 200), (0, y_coordinate * self.CubeSize), (self.width, y_coordinate * self.CubeSize))
+
+
+
+    #Ядро программы создающее окно и его настройку
     def startGame(self):
         global width,rows
-        width=600                                  #Размер экрана игры
-        rows=10                                    #Количество столбиков и рядков
+        width=self.width           #Размер экрана игры
+        rows=self.rows             #Количество столбиков и рядков
 
-        print(self.life)
 
         win=pygame.display.set_mode((width,width)) # Создание окна игры
         clock=pygame.time.Clock()                  #Запуск Игрового таймера
@@ -131,13 +148,13 @@ class Game:
         flagStop=True
         Counter=0
 
-        self.redrawWindow(win,0)
+        self.redrawWindow(win)
         while flag:
             pygame.time.delay(700)
             clock.tick(60)
-            flagStop,Counter=self.stopProgram(flagStop,Counter,win)  #Пауза программы на пробел
+            flagStop,Counter=self.pauseProgram(flagStop,Counter,win)  #Пауза программы на пробел
             if flagStop is False:
-                self.redrawWindow(win,i)
+                self.redrawWindow(win)
                 i+=1
 
 
