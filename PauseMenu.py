@@ -98,7 +98,7 @@ class Game:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:                #Проверка на нажатие кнопки паузы
                     Counter += 1
-                    if Counter % 2 is 0:
+                    if Counter % 2 is not 0:
                         flagStop = False
                     else:
                         flagStop = True
@@ -142,6 +142,8 @@ class Game:
 
 
         win=pygame.display.set_mode((width,width)) # Создание окна игры
+        #win.display.set_caption("New")
+        pygame.display.set_caption("Gane of life")
         clock=pygame.time.Clock()                  #Запуск Игрового таймера
         flag=True
         i=0
@@ -156,6 +158,9 @@ class Game:
             if flagStop is False:
                 self.redrawWindow(win)
                 i+=1
+                pygame.display.set_caption("Game of life")
+            else:
+                pygame.display.set_caption("Game is paused, draw something")
 
 
 game=Game()
