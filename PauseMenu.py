@@ -16,6 +16,7 @@ class Game:
             self.life.append([])
             for j in range(self.rows):
                 self.life[i].append(0)
+        self.life[0][0]=1
 
 
 
@@ -26,17 +27,53 @@ class Game:
         for i in range(rows):
             x=x+size
             y=y+size
-            pygame.draw.line(surface,(255,255,255),(x,0),(x,w))
-            pygame.draw.line(surface,(255,255,255),(0,y),(w,y))
+            pygame.draw.line(surface,(200,200,200),(x,0),(x,w))
+            pygame.draw.line(surface,(200,200,200),(0,y),(w,y))
 
+    def algorithm(self):
+        life=self.life
+        life_kopie=[]
+        Length=len(life)
+        for i in range(Length):
+            life_kopie.append([])
+        for i in range(Length):
+            for j in range(Length):
+                life_kopie[i].append(life[i][j])
+
+        for i in range(Length):
+            for j in range(Length):
+                zivot = 0
+                for o in range(-1, 2):
+                    for k in range(-1, 2):
+                        first = (i + o)
+                        second = (j + k)
+                        if first != -1:
+                            first = first % Length
+                        if second != -1:
+                            second = second % Length
+                        if life[first][second] == 1 and (first != i or second != j):
+                            zivot += 1
+                if zivot < 2:
+                    life_kopie[i][j] = 0
+                elif zivot == 2:
+                    if (life_kopie[i][j] != 0):
+                        life_kopie[i][j] = 1
+                elif zivot == 3:
+                    life_kopie[i][j] = 1
+                else:
+                    life_kopie[i][j] = 0
+        self.life=life_kopie
 
     def draw(self,surface,i):
         life=self.life
-        #for cell_indexi in range(rows):
-            #for cell_indexj in range(rows)
-            #if cell==1:
-                #pygame.draw.rect(surface, (255, 255, 255), (60, 60 * i, 60, 60))
-        pygame.draw.rect(surface, (255, 255, 255), (60, 60*i, 60, 60))
+        Length=len(life)
+        pygame.draw.rect(surface, (255, 255, 255), (60, 60 * i, 60, 60))
+        for i in range(Length):
+            for j in range(Length):
+                if life[i][j]==1:
+                    pygame.draw.rect(surface, (255, 255, 255), (j * 60, i * 60, 60, 60))   #Проверяем какие клетки у нас живые
+                                                                                           #и закрашиваем их
+
 
 
 
@@ -44,6 +81,7 @@ class Game:
         surface.fill((0,0,0))
         self.drawGrid(width,rows,surface)
         self.draw(surface,i)
+        self.algorithm()
         pygame.display.update()
 
     def stopProgram(self,flagStop,Counter, win):
@@ -57,11 +95,27 @@ class Game:
                         flagStop = True
             if event.type==pygame.MOUSEBUTTONDOWN:
                 if event.button==1:
-                    mx,my=pygame.mouse.get_pos()
-                    pygame.draw.rect(win, (255, 255, 255), (mx//60 * 60, my//60 * 60, 60, 60))
+                    mx,my=pygame.mouse.get_pos()                                         #Считываем позицию курсора
+
+                    x_coordinate=mx//60   #Координата х клетки
+                    y_coordinate=my//60   #Координата у клетки
+
+
+                    if self.life[y_coordinate][x_coordinate]!=1:
+                        self.user_drawing(win,(255,255,255),x_coordinate,y_coordinate,1)  #Если клетка мертва и мы кликаем
+                                                                                          #То превращаем клетку в живую
+                    else:
+                        self.user_drawing(win,(0,0,0),x_coordinate,y_coordinate,0)        #Если клетка жива и мы кликаем
+                                                                                          #То превращаем клетку в мертвую
+                    print(self.life)
                     pygame.display.update()
         return flagStop,Counter
 
+    def user_drawing(self,surface, color, x_coordinate,y_coordinate, cell_type):
+        pygame.draw.rect(surface, color, (x_coordinate * 60, y_coordinate * 60, 60, 60))
+        self.life[y_coordinate][x_coordinate] = cell_type
+        pygame.draw.line(surface, (200, 200, 200), (x_coordinate * 60, 0), (x_coordinate * 60, 600))
+        pygame.draw.line(surface, (200, 200, 200), (0, y_coordinate * 60), (600, y_coordinate * 60))
 
     def startGame(self):
         global width,rows
@@ -74,18 +128,18 @@ class Game:
         clock=pygame.time.Clock()                  #Запуск Игрового таймера
         flag=True
         i=0
-        flagStop=False
+        flagStop=True
         Counter=0
+
+        self.redrawWindow(win,0)
         while flag:
-            pygame.time.delay(500)
+            pygame.time.delay(700)
             clock.tick(60)
-
-
             flagStop,Counter=self.stopProgram(flagStop,Counter,win)  #Пауза программы на пробел
-
             if flagStop is False:
                 self.redrawWindow(win,i)
                 i+=1
+
 
 game=Game()
 game.startGame()
