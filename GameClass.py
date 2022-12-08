@@ -6,6 +6,7 @@ class Game:
     life=[]                  #Объявление глобальных переменных
     rows=20
     Counter=0
+    speed=150
     width=600
     CubeSize=width//rows
     stopFlag=False
@@ -154,7 +155,7 @@ class Game:
 
         self.redrawWindow(win)
         while flag:
-            pygame.time.delay(700)
+            pygame.time.delay(self.speed)
             clock.tick(60)
             flagStop,Counter=self.pauseProgram(flagStop,Counter,win)  #Пауза программы на пробел
             if flagStop is False:
