@@ -1,19 +1,24 @@
 import sys
 import pygame
+import json
 pygame.init()
 class Game:
+
     life=[]                  #Объявление глобальных переменных
-    rows=20
+
     Counter=0
-    speed=150
-    width=600
-    CubeSize=width//rows
+
     stopFlag=False
 
 
 
     def __init__(self):
-
+        file = open('settings.json')
+        data = json.load(file)
+        self.speed=data['speed']
+        self.rows=data['rows']
+        self.width=600
+        self.CubeSize= self.width // self.rows
         for i in range(self.rows):          #Заполнение примитивного массива игры мертвыми клетками
             self.life.append([])
             for j in range(self.rows):
