@@ -1,5 +1,7 @@
-import pygame
+import sys
 
+import pygame
+pygame.init()
 class Game:
     life=[]                  #Объявление глобальных переменных
     rows=20
@@ -98,12 +100,12 @@ class Game:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:                #Проверка на нажатие кнопки паузы
                     Counter += 1
-                    if Counter % 2 is not 0:
+                    if Counter % 2 != 0:
                         flagStop = False
                     else:
                         flagStop = True
                 if event.key ==pygame.K_ESCAPE:                #Проверка на нажатие кнопки выхода
-                    pygame.quit()
+                    sys.exit()
 
             if event.type==pygame.MOUSEBUTTONDOWN:
                 if event.button==1:
@@ -162,6 +164,6 @@ class Game:
             else:
                 pygame.display.set_caption("Game is paused, draw something")
 
-
-game=Game()
-game.startGame()
+#
+# game=Game()
+# game.startGame()
