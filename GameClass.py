@@ -1,5 +1,4 @@
 import sys
-
 import pygame
 pygame.init()
 class Game:
@@ -106,7 +105,7 @@ class Game:
                     else:
                         flagStop = True
                 if event.key ==pygame.K_ESCAPE:                #Проверка на нажатие кнопки выхода
-                    sys.exit()
+                    exit()
 
             if event.type==pygame.MOUSEBUTTONDOWN:
                 if event.button==1:
