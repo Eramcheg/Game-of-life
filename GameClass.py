@@ -105,6 +105,7 @@ class Game:
                     else:
                         flagStop = True
                 if event.key ==pygame.K_ESCAPE:                #Проверка на нажатие кнопки выхода
+                    pygame.quit()
                     exit()
 
             if event.type==pygame.MOUSEBUTTONDOWN:

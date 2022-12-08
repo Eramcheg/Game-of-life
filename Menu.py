@@ -32,9 +32,7 @@ class Menu:
 
      def startGame(self,root):
         root.destroy()
-        t1=threading.Thread(target=self.openGame)
-        t1.start()
-        t1.join()
+        self.openGame()
 
      def openGame(self):
         game = GameClass.Game()
@@ -42,9 +40,8 @@ class Menu:
 
      def SettingsMethod(self,root):
          root.destroy()
-         t2=threading.Thread(target=self.openSettings)
-         t2.start()
-         t2.join()
+         self.openSettings()
+
      def openSettings(self):
 
          settin=Settings.SettingsC()

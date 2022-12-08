@@ -1,6 +1,5 @@
 import sys
 import tkinter as tk
-import threading
 
 
 class SettingsC:
@@ -32,9 +31,7 @@ class SettingsC:
 
     def backMenu(self,root):
         root.destroy()
-        t1 = threading.Thread(target=self.openMenu)
-        t1.start()
-        t1.join()
+        self.openMenu()
 
     def openMenu(self):
         from Menu import Menu
