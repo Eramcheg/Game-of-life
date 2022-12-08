@@ -3,7 +3,7 @@ import GameClass
 import threading
 from tkinter import *
 import Settings
-
+import json
 
 class Menu:
 
