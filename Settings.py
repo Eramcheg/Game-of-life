@@ -60,8 +60,8 @@ class SettingsC:
 
 
     def openMenu(self):
-        from Menu import Menu
-        menu = Menu()
+        from Menu import MenuClass
+        menu = MenuClass()
         menu.startMenu()
     def quitSettings(self):
        exit()
