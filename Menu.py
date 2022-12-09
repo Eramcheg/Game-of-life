@@ -5,7 +5,7 @@ from tkinter import *
 import Settings
 import json
 
-class Menu:
+class MenuClass:
 
      def startMenu(self):
         root = tk.Tk()
@@ -33,6 +33,7 @@ class Menu:
      def startGame(self,root):
         root.destroy()
         self.openGame()
+        #root.disconify()
 
      def openGame(self):
         game = GameClass.Game()
@@ -50,6 +51,6 @@ class Menu:
         exit()
 
 
-st=Menu()
+st=MenuClass()
 st.startMenu()
 

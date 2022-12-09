@@ -1,6 +1,10 @@
 import sys
 import pygame
 import json
+import os
+
+import GameClass
+
 pygame.init()
 class Game:
 
@@ -17,7 +21,7 @@ class Game:
         data = json.load(file)
         self.speed=data['speed']
         self.rows=data['rows']
-        self.width=600
+        self.width=data['resolution']
         self.CubeSize= self.width // self.rows
         for i in range(self.rows):          #Заполнение примитивного массива игры мертвыми клетками
             self.life.append([])
@@ -109,9 +113,16 @@ class Game:
                         flagStop = False
                     else:
                         flagStop = True
-                if event.key ==pygame.K_ESCAPE:                #Проверка на нажатие кнопки выхода
+                if event.key == pygame.K_q:                #Проверка на нажатие кнопки выхода
                     pygame.quit()
                     exit()
+                if event.key == pygame.K_ESCAPE:
+                    pygame.init()
+                    pygame.quit()
+                    python = sys.executable
+                    os.execl(python, python, *sys.argv)
+
+
 
             if event.type==pygame.MOUSEBUTTONDOWN:
                 if event.button==1:
