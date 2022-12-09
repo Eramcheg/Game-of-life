@@ -1,6 +1,8 @@
 import tkinter as tk
 import GameClass
 from tkinter import *
+
+import Rules
 import Settings
 
 
@@ -16,6 +18,7 @@ class MenuClass:
         buttonFrame.columnconfigure(0, weight=1)
         buttonFrame.columnconfigure(1, weight=1)
         buttonFrame.columnconfigure(2, weight=1)
+        buttonFrame.columnconfigure(3,weight=1)
 
         buttonFrame.pack(pady=200)
         startGameBtn = tk.Button(buttonFrame, text="Start Game", font=('Arial', 18),
@@ -23,11 +26,16 @@ class MenuClass:
         startGameBtn.grid(row=0, column=1, sticky=tk.E + tk.W)
 
         settingsBtn = Button(buttonFrame, text="Settings", font=('Arial', 18),
-                             command=lambda: self.SettingsMethod(root))
-        settingsBtn.grid(row=2, column=1, sticky=tk.E + tk.W)
+                             command=lambda: self.startSettings(root))
+        settingsBtn.grid(row=1, column=1, sticky=tk.E + tk.W)
+
+        rulesBtn=Button(buttonFrame,text="Rules",font=('Arial',18), command=lambda:self.startRules(root))
+        rulesBtn.grid(row=2,column=1,sticky=tk.E+tk.W)
 
         quitBtn = tk.Button(buttonFrame, text="Quit", font=('Arial', 18), command=self.quitMenu)
         quitBtn.grid(row=3, column=1, sticky=tk.E + tk.W)
+
+
 
         root.mainloop()
 
@@ -39,13 +47,21 @@ class MenuClass:
         game = GameClass.Game()
         game.startGame()
 
-    def SettingsMethod(self, root):
+    def startSettings(self, root):
         root.destroy()
         self.openSettings()
 
     def openSettings(self):
-        settin = Settings.SettingsC()
-        settin.windowSettings()
+        settings = Settings.SettingsC()
+        settings.windowSettings()
+
+    def startRules(self,root):
+        root.destroy()
+        self.openRules()
+
+    def openRules(self):
+        rules=Rules.RulesClass()
+        rules.startRules()
 
     def quitMenu(self):
         exit()
