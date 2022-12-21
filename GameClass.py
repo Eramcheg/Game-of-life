@@ -145,7 +145,7 @@ class Game:
 
         win = pygame.display.set_mode((width, width))  # Создание окна игры
         # win.display.set_caption("New")
-        pygame.display.set_caption("Gane of life")
+        pygame.display.set_caption("Game of life")
         clock = pygame.time.Clock()  # Запуск Игрового таймера
         flag = True
         i = 0
